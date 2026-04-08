@@ -1,0 +1,39 @@
+# Systemd service template for LiveStockify on Raspberry Pi 5
+# 
+# Installation:
+#   sudo cp scripts/livestockify.service /etc/systemd/system/
+#   sudo systemctl daemon-reload
+#   sudo systemctl enable livestockify
+#   sudo systemctl start livestockify
+#
+# Check status:
+#   sudo systemctl status livestockify
+#   sudo journalctl -u livestockify -f
+
+[Unit]
+Description=LiveStockify Inference Service
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=pi
+Group=pi
+WorkingDirectory=/home/pi/livestockify
+ExecStart=/home/pi/livestockify/scripts/run_inference.sh
+
+# Restart policy - if it crashes, restart after 10s
+Restart=always
+RestartSec=10
+
+# Resource limits (adjust based on Pi 5 RAM)
+MemoryMax=4G
+CPUWeight=100
+
+# Logging
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=livestockify
+
+[Install]
+WantedBy=multi-user.target

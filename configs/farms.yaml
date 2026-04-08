@@ -1,0 +1,58 @@
+# Farm metadata - used by data scripts and inference
+
+farms:
+  saibabu:
+    name: Saibabu Farm
+    location: Telangana, India
+    start_date: 2026-02-09
+    cycle_days: 26
+    cameras:
+      cam1:
+        position: high-angle, north end
+        fov: ~50% of shed
+        notes: Good clarity in foreground, far end fades
+      cam2:
+        position: high-angle, mid section
+        fov: ~50% of shed
+        notes: Best camera, less obstruction
+      cam3:
+        position: high-angle, south end
+        fov: ~50% of shed
+        notes: Storage area until d10, then full bird coverage
+    lights_off_hour: 18         # 6 PM
+    lights_on_hour: 21          # 9 PM (approximate)
+    feeding: ad libitum
+    feeders: red bell feeders
+    drinkers: white nipple drinkers
+
+  naveen:
+    name: Naveen Farm
+    location: Telangana, India
+    start_date: 2026-02-10
+    cycle_days: 24
+    cameras:
+      cam1:
+        position: high-angle
+      cam2:
+        position: high-angle
+      cam3:
+        position: high-angle
+    lights_off_hour: 18
+    lights_on_hour: 20          # ~8 PM
+    feeding: ad libitum
+
+  vamsi:
+    name: Vamsi Farm
+    location: Telangana, India
+    start_date: 2026-02-04
+    cycle_days: 28
+    cameras:
+      cam1:
+        position: high-angle
+      cam2:
+        position: high-angle
+      cam3:
+        position: high-angle
+    lights_off_hour: null       # 24-hour lighting
+    lights_on_hour: null
+    feeding: ad libitum

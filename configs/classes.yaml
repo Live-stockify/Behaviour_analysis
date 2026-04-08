@@ -1,0 +1,23 @@
+# Behavioral classes detected by the model
+# IMPORTANT: Order matches the model's class IDs (do not change)
+
+classes:
+  - id: 0
+    name: Drinking
+    description: Bird at a water drinker, head tilted up
+    color_bgr: [255, 100, 100]   # Light blue (BGR for OpenCV)
+
+  - id: 1
+    name: Eating
+    description: Bird at a feed bell, head down pecking
+    color_bgr: [100, 255, 100]   # Green
+
+  - id: 2
+    name: Sitting
+    description: Bird flat on the ground, low profile
+    color_bgr: [100, 100, 255]   # Red
+
+  - id: 3
+    name: Standing
+    description: Bird upright, walking or idle
+    color_bgr: [255, 255, 100]   # Cyan

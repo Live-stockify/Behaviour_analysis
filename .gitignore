@@ -1,0 +1,108 @@
+# ============================================================
+# Python
+# ============================================================
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+*.egg-info/
+.installed.cfg
+*.egg
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# ============================================================
+# Virtual environments
+# ============================================================
+venv/
+env/
+ENV/
+.venv/
+live_env/
+*.venv/
+
+# ============================================================
+# IDE / Editor
+# ============================================================
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+
+# ============================================================
+# Data — NEVER commit
+# ============================================================
+raw_clips/
+extracted_frames/
+extracted_frames_old/
+sampled_frames/
+pre_annotations/
+pre_annotations_upload/
+roboflow_anuj/
+roboflow_*/
+yolo_dataset/
+round*_dataset/
+comparison_results/
+test_input/
+test_output/
+test_logs/
+*.mp4
+*.avi
+*.mov
+*.mkv
+
+# ============================================================
+# Training artifacts
+# ============================================================
+runs/
+wandb/
+mlruns/
+lightning_logs/
+*.cache
+
+# ============================================================
+# Logs
+# ============================================================
+logs/
+*.log
+extraction_log.csv
+sampling_log.csv
+skipped_files.csv
+download_log.csv
+
+# ============================================================
+# Secrets & credentials
+# ============================================================
+.env
+.env.local
+credentials.json
+*.key
+*.pem
+secrets/
+service-account*.json
+
+# ============================================================
+# OS / Misc
+# ============================================================
+*.bak
+*.tmp
+.cache/
+node_modules/
+
+# ============================================================
+# Models — EXCEPT the production model
+# ============================================================
+# Ignore all .pt files by default
+*.pt
+# But ALLOW the committed production model
+!models/livestockify_v1.pt
+!models/yolov8n.pt
+!models/yolov8s.pt
+
+# Also allow the README in models/
+!models/README.md
