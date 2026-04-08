@@ -106,3 +106,7 @@ node_modules/
 
 # Also allow the README in models/
 !models/README.md
+
+# Runtime output
+data/output/
+data/test_clips/
