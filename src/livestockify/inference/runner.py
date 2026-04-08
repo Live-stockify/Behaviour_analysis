@@ -203,7 +203,7 @@ class InferenceRunner:
             
             # Log a quick summary
             counts_str = " | ".join(
-                f"{k[:1]}:{v}" for k, v in record.counts.items()
+                f"{k[:2]}:{v}" for k, v in record.counts.items()
             )
             logger.info(
                 f"Frame {record.frame_index} | total={record.total} | "
