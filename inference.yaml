@@ -1,0 +1,91 @@
+# Inference runtime configuration
+# Edit this file to change behavior without touching code
+
+# ============================================================
+# Model
+# ============================================================
+model:
+  weights: models/livestockify_v1.pt
+  conf_threshold: 0.10      # Base threshold
+  iou_threshold: 0.45       # NMS IoU threshold
+  imgsz: 640                # Input size for the model
+  device: cpu               # cpu, mps, or cuda
+  enable_clahe: true        # Level 3 Lighting boost
+  
+  # Per-class sensitivity (Level 3 optimization)
+  class_thresholds:
+    Drinking: 0.08
+    Eating: 0.08
+    Sitting: 0.12
+    Standing: 0.12
+
+# ============================================================
+# Tiling / Sliced Inference
+# ============================================================
+tiling:
+  enabled: true
+  grid: [2, 2]
+  overlap: 0.25             # 25% overlap for the 2x2 grid
+
+# ============================================================
+# Video source
+# ============================================================
+# Two options for "type": rtsp or file
+source:
+  type: file                # Change to "rtsp" for production
+  
+  # For type=file
+  file_path: test-4_n.mp4
+  
+  # For type=rtsp
+  rtsp_url: "rtsp://username:password@192.168.1.100:554/stream1"
+  
+  # Reconnect settings (rtsp only)
+  reconnect_delay_seconds: 5
+  max_reconnect_attempts: 100
+
+# ============================================================
+# Frame sampling
+# ============================================================
+# Don't process every frame - that's wasteful and slow on Pi
+sampling:
+  interval_seconds: 5       # Process 1 frame every N seconds
+  warmup_frames: 3          # Discard first N frames (camera adjustment)
+
+# ============================================================
+# Output
+# ============================================================
+output:
+  # Where to write detection records
+  json_dir: data/output/detections
+  
+  # File naming: detections_YYYY-MM-DD.jsonl
+  # Each line is one JSON record (jsonl format = easy to append)
+  format: jsonl
+  
+  # Rotate to a new file every day
+  daily_rotation: true
+  
+  # Also save annotated frames? (for debugging - takes disk space)
+  save_frames: false
+  frames_dir: data/output/frames
+
+# ============================================================
+# Farm metadata
+# ============================================================
+# This metadata is included in every JSON record
+# So when we have multiple farms, the cloud knows which Pi sent the data
+farm:
+  id: saibabu                  # Short identifier
+  name: Saibabu Farm           # Display name
+  cam_id: cam1                 # Which camera this Pi is monitoring
+  location: Telangana, India
+
+# ============================================================
+# Logging
+# ============================================================
+logging:
+  level: INFO                  # DEBUG, INFO, WARNING, ERROR
+  log_file: logs/inference.log
+  rotation: 10 MB              # Rotate logs when they hit this size
+  retention: 7 days
