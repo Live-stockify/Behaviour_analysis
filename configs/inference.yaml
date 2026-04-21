@@ -6,10 +6,26 @@
 # ============================================================
 model:
   weights: models/livestockify_v1.pt
-  conf_threshold: 0.15      # Lower = more detections, more false positives
+  conf_threshold: 0.10      # Base threshold
   iou_threshold: 0.45       # NMS IoU threshold
   imgsz: 640                # Input size for the model
   device: cpu               # cpu, mps, or cuda
+  enable_clahe: true        # Level 3 Lighting boost
+  
+  # Per-class sensitivity (Level 3 optimization)
+  class_thresholds:
+    Drinking: 0.08
+    Eating: 0.08
+    Sitting: 0.12
+    Standing: 0.12
+
+# ============================================================
+# Tiling / Sliced Inference
+# ============================================================
+tiling:
+  enabled: true
+  grid: [2, 2]
+  overlap: 0.25             # 25% overlap for the 2x2 grid
 
 # ============================================================
 # Video source
@@ -19,10 +35,10 @@ source:
   type: file                # Change to "rtsp" for production
   
   # For type=file
-  file_path: data/test_clips/saibabu_test.mp4
+  file_path: test-4_n.mp4
   
   # For type=rtsp
-  rtsp_url: rtsp://username:password@192.168.1.100:554/stream1
+  rtsp_url: "rtsp://username:password@192.168.1.100:554/stream1"
   
   # Reconnect settings (rtsp only)
   reconnect_delay_seconds: 5
