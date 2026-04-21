@@ -38,6 +38,7 @@ class CountRecord:
     avg_confidence: float
     inference_time_ms: float
     frame_index: int             # Which frame this came from
+    cpu_usage: float = 0.0       # CPU percent used for monitoring
     
     def to_dict(self) -> dict:
         return asdict(self)
@@ -67,6 +68,7 @@ class Aggregator:
         self,
         detections: List[Detection],
         inference_time_ms: float = 0.0,
+        cpu_usage: float = 0.0,
     ) -> CountRecord:
         """
         Convert detections to a count record.
@@ -107,4 +109,5 @@ class Aggregator:
             avg_confidence=round(avg_conf, 4),
             inference_time_ms=round(inference_time_ms, 2),
             frame_index=self.frame_index,
+            cpu_usage=round(cpu_usage, 2),
         )

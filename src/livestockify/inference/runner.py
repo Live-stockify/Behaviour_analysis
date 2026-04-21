@@ -19,12 +19,13 @@ import time
 from pathlib import Path
 from typing import Optional
 
+import psutil
 import yaml
 from loguru import logger
 
 from livestockify.inference.aggregator import Aggregator
 from livestockify.inference.detector import Detector
-from livestockify.inference.video_source import VideoSource, create_source
+from livestockify.inference.video_source import VideoSource, FileSource, create_source
 from livestockify.storage.json_writer import JsonLinesWriter
 
 
@@ -124,13 +125,20 @@ class InferenceRunner:
         # Detector
         logger.info("[2/4] Loading detector...")
         model_cfg = self.config["model"]
+        tiling_cfg = self.config.get("tiling", {})
+        
         self.detector = Detector(
             weights_path=model_cfg["weights"],
             class_names=self.class_names,
-            conf_threshold=model_cfg.get("conf_threshold", 0.15),
+            conf_threshold=model_cfg.get("conf_threshold", 0.10),
             iou_threshold=model_cfg.get("iou_threshold", 0.45),
             imgsz=model_cfg.get("imgsz", 640),
             device=model_cfg.get("device", "cpu"),
+            enable_clahe=model_cfg.get("enable_clahe", True),
+            tiling_enabled=tiling_cfg.get("enabled", True),
+            tiling_grid=tuple(tiling_cfg.get("grid", [2, 2])),
+            tiling_overlap=tiling_cfg.get("overlap", 0.25),
+            class_conf_thresholds=model_cfg.get("class_thresholds"),
         )
         
         # Aggregator
@@ -175,8 +183,7 @@ class InferenceRunner:
             ret, frame = self.source.read()
             if not ret or frame is None:
                 logger.warning("No frame received, source may be exhausted")
-                if isinstance(self.source.__class__.__name__, str) and \
-                   self.source.__class__.__name__ == "FileSource":
+                if isinstance(self.source, FileSource):
                     logger.info("End of file reached. Stopping.")
                     break
                 time.sleep(1)
@@ -192,8 +199,11 @@ class InferenceRunner:
             inference_ms = (time.time() - inference_start) * 1000
             last_inference_time = inference_ms
             
+            # Get CPU Usage
+            cpu_percent = psutil.cpu_percent(interval=None)
+            
             # Aggregate
-            record = self.aggregator.aggregate(detections, inference_ms)
+            record = self.aggregator.aggregate(detections, inference_ms, cpu_percent)
             
             # Write
             try:
@@ -207,7 +217,7 @@ class InferenceRunner:
             )
             logger.info(
                 f"Frame {record.frame_index} | total={record.total} | "
-                f"{counts_str} | inference={inference_ms:.0f}ms"
+                f"{counts_str} | inference={inference_ms:.0f}ms | cpu={cpu_percent}%"
             )
             
             processed_count += 1
