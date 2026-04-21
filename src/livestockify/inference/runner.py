@@ -18,7 +18,7 @@ import sys
 import time
 from pathlib import Path
 from typing import Optional
-
+import os
 import yaml
 from loguru import logger
 
@@ -35,6 +35,7 @@ from livestockify.storage.json_writer import JsonLinesWriter
 def load_config(config_path: str | Path) -> dict:
     """Load and validate the inference YAML config."""
     config_path = Path(config_path)
+    a = 1
     if not config_path.exists():
         raise FileNotFoundError(f"Config file not found: {config_path}")
     
