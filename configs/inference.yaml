@@ -14,62 +14,87 @@ model:
 # ============================================================
 # Video source
 # ============================================================
-# Two options for "type": rtsp or file
+# mode: "single" (one camera) or "multi" (cycle through multiple cameras)
 source:
-  type: file                # Change to "rtsp" for production
-  
-  # For type=file
-  file_path: data/test_clips/saibabu_test.mp4
-  
-  # For type=rtsp
-  rtsp_url: rtsp://username:password@192.168.1.100:554/stream1
-  
-  # Reconnect settings (rtsp only)
+  mode: single              # Change to "multi" for multi-camera cycling
+
+  # --- SINGLE MODE ---
+  # Used when mode=single (testing or one-camera deployment)
+  type: file                # "file" or "rtsp"
+  file_path: data/test_clips/test.mp4
+  rtsp_url: ""              # Fill in when using rtsp
+
+  # --- MULTI MODE ---
+  # Used when mode=multi (production with multiple cameras)
+  # The runner will cycle through these cameras in order, processing
+  # one frame from each before moving to the next.
+  cameras:
+    - id: cam1
+      rtsp_url: ""           # Fill with actual RTSP URL after camera setup
+      enabled: true
+    - id: cam2
+      rtsp_url: ""
+      enabled: true
+    - id: cam3
+      rtsp_url: ""
+      enabled: true
+    - id: cam4
+      rtsp_url: ""
+      enabled: true
+    - id: cam5
+      rtsp_url: ""
+      enabled: true
+    - id: cam6
+      rtsp_url: ""
+      enabled: true
+    - id: cam7
+      rtsp_url: ""
+      enabled: true
+    - id: cam8
+      rtsp_url: ""
+      enabled: true
+
+  # Reconnect settings (rtsp only, applies to all cameras)
   reconnect_delay_seconds: 5
   max_reconnect_attempts: 100
 
 # ============================================================
 # Frame sampling
 # ============================================================
-# Don't process every frame - that's wasteful and slow on Pi
 sampling:
-  interval_seconds: 5       # Process 1 frame every N seconds
-  warmup_frames: 3          # Discard first N frames (camera adjustment)
+  # In single mode: process 1 frame every N seconds
+  # In multi mode: N seconds BETWEEN each camera (so 8 cameras × 1s = ~8s cycle)
+  interval_seconds: 1        # 1s between cameras in multi, 5s in single
+  warmup_frames: 3           # Discard first N frames per camera
 
 # ============================================================
 # Output
 # ============================================================
 output:
-  # Where to write detection records
   json_dir: data/output/detections
-  
+
   # File naming: detections_YYYY-MM-DD.jsonl
-  # Each line is one JSON record (jsonl format = easy to append)
   format: jsonl
-  
-  # Rotate to a new file every day
   daily_rotation: true
-  
-  # Also save annotated frames? (for debugging - takes disk space)
+
+  # Save annotated frames? (for debugging - takes disk space)
   save_frames: false
   frames_dir: data/output/frames
 
 # ============================================================
 # Farm metadata
 # ============================================================
-# This metadata is included in every JSON record
-# So when we have multiple farms, the cloud knows which Pi sent the data
+# Included in every JSON record
 farm:
-  id: saibabu                  # Short identifier
-  name: Saibabu Farm           # Display name
-  cam_id: cam1                 # Which camera this Pi is monitoring
+  id: dubbacharla
+  name: Dubbacharla Farm
   location: Telangana, India
 
 # ============================================================
 # Logging
 # ============================================================
 logging:
-  level: INFO                  # DEBUG, INFO, WARNING, ERROR
+  level: INFO
   log_file: logs/inference.log
-  rotation: 10 MB              # Rotate logs when they hit this size
+  rotation: 10 MB
   retention: 7 days
