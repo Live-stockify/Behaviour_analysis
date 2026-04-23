@@ -1,5 +1,4 @@
-# Inference dependencies for Pi 5 deployment
-# Lightweight - no CUDA, no training tools
+# Inference + API dependencies for Pi 5 deployment
 
 # Core ML
 ultralytics>=8.0.0
@@ -10,6 +9,10 @@ torchvision>=0.15.0
 opencv-python-headless>=4.8.0
 numpy>=1.24.0
 Pillow>=10.0.0
+
+# API server
+fastapi>=0.100.0
+uvicorn[standard]>=0.23.0
 
 # Config and data
 PyYAML>=6.0

@@ -98,3 +98,10 @@ logging:
   log_file: logs/inference.log
   rotation: 10 MB
   retention: 7 days
+# ============================================================
+# API Server
+# ============================================================
+api:
+  host: 0.0.0.0                   # Listen on all interfaces
+  port: 8000
+  api_key: change-me-in-production # Override with LIVESTOCKIFY_API_KEY env var
