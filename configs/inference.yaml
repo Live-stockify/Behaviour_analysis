@@ -2,7 +2,7 @@
 # Dubbacharla deployment — 4 farms, 8 cameras on farm ak1
 
 model:
-  weights: models/livestockify_v1.pt
+  weights: models/livestockify_v1.onnx
   conf_threshold: 0.15
   iou_threshold: 0.45
   imgsz: 640
