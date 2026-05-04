@@ -95,9 +95,9 @@ output:
 # ============================================================
 pusher:
   pi_id: PI-001
-  backend_url: "https://api.livestockify.com/api/farm-ml"              # Your backend team's API URL (e.g., https://api.kuppismart.com/api/farm-ml)
+  backend_url: "https://api.livestockify.com/api/farm-ml"
   backend_api_key: pidata2026
-  interval_seconds: 300        # Push every 5 minutes (300s). Adjust as needed.
+  interval_seconds: 900        # Push every 15 minutes (900s). Adjust as needed.
 
 # ============================================================
 # Local API Server (for direct access via Tailscale)
