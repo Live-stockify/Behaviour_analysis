@@ -1,0 +1,25 @@
+# Systemd service for LiveStockify Data Pusher
+#
+# Installation:
+#   sudo cp scripts/livestockify-pusher.service /etc/systemd/system/
+#   sudo systemctl daemon-reload
+#   sudo systemctl enable livestockify-pusher
+#   sudo systemctl start livestockify-pusher
+
+[Unit]
+Description=LiveStockify Data Pusher (sends detections to backend API)
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=vishnu
+Group=vishnu
+WorkingDirectory=/home/vishnu/livestockify_dev/livestockify
+ExecStart=/home/vishnu/livestockify_dev/livestockify/venv/bin/python -m livestockify.api.pusher --config configs/inference.yaml
+Restart=always
+RestartSec=10
+MemoryMax=4G
+
+[Install]
+WantedBy=multi-user.target
