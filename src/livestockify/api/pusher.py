@@ -242,7 +242,7 @@ def push_to_backend(payload: dict, backend_url: str, timeout: int = 30) -> bool:
             headers={"Content-Type": "application/json"},
         )
 
-        if response.status_code == 200:
+        if response.status_code in (200, 201):
             logger.info(f"Push successful: HTTP {response.status_code}")
             return True
         else:
