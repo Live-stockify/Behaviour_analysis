@@ -58,8 +58,17 @@ farms:
     location: Dubbacharla, Telangana
     cameras:
       - id: cam1
-        rtsp_url: ""
-        enabled: false
+        rtsp_url: "rtsp://user:Live@2023@192.168.0.107:554/cam/realmonitor?channel=1&subtype=1"
+        enabled: true
+      - id: cam2
+        rtsp_url: "rtsp://user:Live@2023@192.168.0.107:554/cam/realmonitor?channel=2&subtype=1"
+        enabled: true
+      - id: cam3
+        rtsp_url: "rtsp://user:Live@2023@192.168.0.107:554/cam/realmonitor?channel=3&subtype=1"
+        enabled: true
+      - id: cam4
+        rtsp_url: "rtsp://user:Live@2023@192.168.0.107:554/cam/realmonitor?channel=4&subtype=1"
+        enabled: true
 
   - id: ak3
     name: Dubbacharla AK3
